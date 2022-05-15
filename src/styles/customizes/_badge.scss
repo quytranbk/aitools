@@ -1,0 +1,11 @@
+.badge {
+    font-size: 0.75rem;
+}
+@each $color, $value in $theme-colors {
+    @if $color != $primary {
+        .badge-#{$color} {
+            background-color: tint-color($value, 80%) !important;
+            color: shade-color($value, $btn-hover-border-shade-amount);
+        }
+      }
+  }

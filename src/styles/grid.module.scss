@@ -1,0 +1,39 @@
+.grid {
+    border: 1px solid #e4e4e4;
+    border-radius: 3px;
+    // overflow: hidden;
+    .grid-header {
+        display: flex;
+        // background-color: #FAFAFA;
+        color: #666;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+    .grid-header, .grid-row:not(:last-child) {
+        border-bottom: 1px solid #e4e4e4;
+    }
+    .grid-header-col, .grid-column {
+        padding: 12px;
+    }
+    .grid-row {
+        display: flex;
+    }
+    .grid-group-row {
+        display: flex;
+        cursor: pointer;
+        background-color: #f8f9fa;
+        &:hover {
+            background-color: #f8f9fa;
+            box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+        }
+    }
+    .group-rows {
+        border-top: 1px solid #e4e4e4;
+    }
+}
+
+.search-box {
+    display: flex;
+    background-color: #FAFAFA;
+    padding: 8px 0;
+}

@@ -1,0 +1,28 @@
+.navbar {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    box-shadow: 0 1px 0 0 #dbdbdb;
+    background-color: #F0F0F0;
+    
+    font-size: 0.75rem;
+    font-weight: 600;
+    .nav-link {
+        display: flex;
+        align-items: center;
+
+        &:hover {
+        background-color: #dddddd;
+        border-radius: 3px;
+        }
+        &:focus {
+        background-color: #c7c6c6;
+        border-radius: 3px;
+        }
+
+        .nav-link-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+            margin-right: 4px;
+        }
+    }
+}
