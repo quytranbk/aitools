@@ -65,11 +65,6 @@ app.on('activate', function () {
 });
 
 
-ipcMain.on('ipc-example', async (event, arg) => {
-    const msgTemplate = (pingPong) => `IPC test: ${pingPong}`;
-    console.log(msgTemplate(arg));
-});
-
 ipcMain.handle('nutjs', (event, arg) => {
     const [fName, ...args] = arg;
     // return console.log(arg);
@@ -79,23 +74,43 @@ ipcMain.handle('nutjs', (event, arg) => {
     return nutjs.keyboard[fName](...args);
 });
 
+const sleep = async (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+const config = { delayMs: 0 };
+robotjs.keyTapAsync = function (...input) {
+    return new Promise(async (resolve, reject) => {
+        try {
+                for (const char of input.join(" ").split("")) {
+                    robotjs.keyTap(...input);
+                    await (0, sleep)(config.delayMs);
+                }
+            resolve(true);
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
+}
+robotjs.setKeyboardDelayAsync = function (value) {
+    config.delayMs = value;
+}
 ipcMain.handle('robotjs', async (event, arg) => {
     const [fName, ...args] = arg;
-    console.log(arg);
     return robotjs[fName](...args);
 });
-app.whenReady().then(() => {
-    // Register a 'CommandOrControl+X' shortcut listener.
-    const ret = globalShortcut.register('CommandOrControl+X', () => {
-      console.log('CommandOrControl+X is pressed')
-    })
+// app.whenReady().then(() => {
+//     // Register a 'CommandOrControl+X' shortcut listener.
+//     const ret = globalShortcut.register('CommandOrControl+X', () => {
+//       console.log('CommandOrControl+X is pressed')
+//     })
   
-    if (!ret) {
-      console.log('registration failed')
-    }
+//     if (!ret) {
+//       console.log('registration failed')
+//     }
   
-    // Check whether a shortcut is registered.
-    console.log(globalShortcut.isRegistered('CommandOrControl+X'))
-  })
+//     // Check whether a shortcut is registered.
+//     console.log(globalShortcut.isRegistered('CommandOrControl+X'))
+//   })
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
