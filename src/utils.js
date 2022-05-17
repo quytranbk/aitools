@@ -6,3 +6,7 @@ export function findMap (data, findKey, value) {
     }
     return data.find(item => item[findKey] === value);
 }
+
+export function getFileExt (fileName) {
+    return fileName.split('.').pop();
+}

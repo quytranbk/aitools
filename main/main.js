@@ -1,8 +1,11 @@
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
-const robotjs = require('robotjs');
-const nutjs = require('@nut-tree/nut-js');
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
+const robotjs = require('./ipcServices/robotjs');
+const filesystem = require('./ipcServices/filesystem');
+// const fs = require('fs/promises');
+// const nutjs = require('@nut-tree/nut-js');
 const path = require('path');
 const url = require('url');
+const ipcRegistry = require('./ipcServices/ipcRegistry');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -64,41 +67,9 @@ app.on('activate', function () {
     }
 });
 
-
-ipcMain.handle('nutjs', (event, arg) => {
-    const [fName, ...args] = arg;
-    // return console.log(arg);
-    if (fName === 'configAutoDelayMs') {
-        return nutjs.keyboard.config.autoDelayMs = args[0];
-    }
-    return nutjs.keyboard[fName](...args);
-});
-
-const sleep = async (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-};
-const config = { delayMs: 0 };
-robotjs.keyTapAsync = function (...input) {
-    return new Promise(async (resolve, reject) => {
-        try {
-                for (const char of input.join(" ").split("")) {
-                    robotjs.keyTap(...input);
-                    await (0, sleep)(config.delayMs);
-                }
-            resolve(true);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
-}
-robotjs.setKeyboardDelayAsync = function (value) {
-    config.delayMs = value;
-}
-ipcMain.handle('robotjs', async (event, arg) => {
-    const [fName, ...args] = arg;
-    return robotjs[fName](...args);
-});
+ipcRegistry('robotjs', robotjs);
+ipcRegistry('filesystem', filesystem);
+ipcRegistry('dialog', dialog);
 // app.whenReady().then(() => {
 //     // Register a 'CommandOrControl+X' shortcut listener.
 //     const ret = globalShortcut.register('CommandOrControl+X', () => {
