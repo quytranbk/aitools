@@ -8,8 +8,7 @@ import { getFileExt } from '../../utils';
 import { AppContext } from '../state-provider';
 
 export default function RightBar () {
-  const { state: { currentFile }, dispatch } = useContext(AppContext);
-  const [currentDirectory, setCurrentDirectory] = useState();
+  const { state: { currentFile, currentDirectory }, dispatch } = useContext(AppContext);
   const [fileList, setFileList] = useState();
   
   useEffect(() => {
@@ -26,7 +25,7 @@ export default function RightBar () {
     const dirPaths = await dialogService.showOpenDialogSync({ properties: ['openDirectory'] });
     console.log(dirPaths);
     if (dirPaths) {
-      setCurrentDirectory(dirPaths[0]);
+      dispatch('setCurrentDirectory', dirPaths[0]);
       const readDirResult = await fileSystemService.readdir(dirPaths[0]);
       if (readDirResult) {
       let fileList = [];
@@ -45,7 +44,7 @@ export default function RightBar () {
   async function handleLoadFile (name) {
     dispatch('setCurrentFile', name);
     const content = await fileSystemService.readFile(`${currentDirectory}\\${name}`, { encoding: 'UTF-8'});
-    dispatch('setSheet', content);
+    dispatch('setCurrentContentFile', content);
   }
 
     return <div className="border-r w-[200px] overflow-y-auto">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import './App.scss';
 import Footer from './components/footer';
@@ -6,9 +6,24 @@ import Header from './components/header';
 import LeftBar from './components/left-bar';
 import MainBody from './components/main-body';
 import RightBar from './components/right-bar';
+import { AppContext } from './components/state-provider';
+import fileSystemService from './ipc/filesystem';
 import './styles/globals.scss';
 
 function App() {
+    const {
+      state: {
+          sheet,
+          currentContentFile,
+          currentFile,
+          currentDirectory,
+        }, 
+          dispatch 
+  } = useContext(AppContext);
+  async function save () {
+      console.log(currentDirectory)
+    await fileSystemService.writeFile(`${currentDirectory}\\${currentFile}`, sheet, { encoding: 'UTF-8'});
+  }
     return <div className="h-full flex flex-col">
         <Header />
 
@@ -31,7 +46,7 @@ function App() {
                             {/* <span>than van he.txt</span> */}
                         </div>
                         <div>
-                            <Button variant="primary">Lưu</Button>
+                            <Button variant="primary" onClick={save}>Lưu</Button>
                         </div>
                     </div>
                 </div>

@@ -46,6 +46,10 @@ export function reducer(state, action) {
       return handleReturn('isPause', true);  
     case 'setCurrentFile':
       return handleReturn('currentFile');  
+    case 'setCurrentContentFile':
+      return handleReturn('currentContentFile');  
+    case 'setCurrentDirectory':
+      return handleReturn('currentDirectory');  
     default:
       throw new Error();
   }
