@@ -9,20 +9,79 @@ export const SHEET_TYPE = {
 };
 export const TIME_NODE_MAP = [
     {
-        num: +4,
+        num: 256,
+        type: 'whole',
+        ratioWithBlackNode: 4
+    },
+    {
+        num: 128,
+        type: 'whole',
+        ratioWithBlackNode: 4
+    },
+    {
+        num: 64,
+        type: 'whole',
+        ratioWithBlackNode: 4
+    },
+    {
+        num: 32,
+        type: 'whole',
+        ratioWithBlackNode: 4
+    },
+    {
+        num: 16,
+        type: 'whole',
+        ratioWithBlackNode: 4
+    },
+    {
+        num: 8,
+        type: 'whole',
+        ratioWithBlackNode: 4
+    },
+    {
+        num: 4,
+        type: 'whole',
         ratioWithBlackNode: 4
     },
     {
         num: 2,
+        type: 'half',
         ratioWithBlackNode: 2
     },
     {
+        num: 1,
+        type: 'quarter',
+        ratioWithBlackNode: 1
+    },
+    {
         num: -2,
+        type: 'eighth',
         ratioWithBlackNode: 1/2
     },
     {
         num: -4,
+        type: '16th',
         ratioWithBlackNode: 1/4
+    },
+    {
+        num: -8,
+        type: '32nd',
+        ratioWithBlackNode: 1/8
+    },
+    {
+        num: -16,
+        type: '64th',
+        ratioWithBlackNode: 1/16
+    },
+    {
+        num: -32,
+        type: '128th',
+        ratioWithBlackNode: 1/32
+    },
+    {
+        num: -64,
+        type: '256th',
+        ratioWithBlackNode: 1/64
     },
 ];
 

@@ -19,8 +19,8 @@ export default function MainBody () {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentContentFile]);
 
-    return <div className="flex-1 p-2">
-        <h3>{currentFile}</h3>
-        <Form.Control className="border-0 h-full" as="textarea" spellCheck="false" value={sheet} onChange={(e) => dispatch('setSheet', e.target.value)} />
+    return <div className="flex-1 flex flex-col p-2">
+        <h3 className="px-2">{currentFile}</h3>
+        <Form.Control className="border-0 h-full whitespace-nowrap" as="textarea" spellCheck="false" value={sheet} onChange={(e) => dispatch('setSheet', e.target.value)} />
     </div>;
 }
