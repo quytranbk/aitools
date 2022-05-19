@@ -142,7 +142,7 @@ export default function Header() {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        <Dropdown.Item eventKey="1" onClick={importFile}>Import</Dropdown.Item>
+                        <Dropdown.Item eventKey="1" onClick={importFile}>Nhập...</Dropdown.Item>
                         <Dropdown.Item eventKey="2" >Thoát</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
