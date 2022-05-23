@@ -46,10 +46,17 @@ export function reducer(state, action) {
       return handleReturn('isPause', true);  
     case 'setCurrentFile':
       return handleReturn('currentFile');  
-    case 'setCurrentContentFile':
-      return handleReturn('currentContentFile');  
+    case 'setImportedContentFile':
+      return handleReturn('importedContentFile');  
     case 'setCurrentDirectory':
       return handleReturn('currentDirectory');  
+    case 'setPageType':
+      return handleReturn('pageType');  
+    case 'setReloadDetailEv':
+      action.payload = {};
+      return handleReturn('reloadDetailEv');  
+    case 'setIsHoldSpace':
+      return handleReturn('isHoldSpace'); 
     default:
       throw new Error();
   }

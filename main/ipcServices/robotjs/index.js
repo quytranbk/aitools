@@ -18,6 +18,18 @@ module.exports.keyTapAsync = function (input) {
         }
     });
 }
+module.exports.keyToggleAsync = function (...input) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            robotjs.keyToggle(...input);
+            await (0, sleep)(config.delayMs);
+            resolve(true);
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
+}
 module.exports.setKeyboardDelayAsync = function (value) {
     config.delayMs = value;
 }

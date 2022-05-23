@@ -1,35 +1,82 @@
-import { useContext } from 'react';
-import { Form } from 'react-bootstrap';
-import { SHEET_TYPE } from '../../const';
+import cn from 'classnames';
+import { useContext, useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import text_file from '../../assets/images/text_file.png';
+import dialogService from '../../ipc/dialog';
+import fileSystemService from '../../ipc/filesystem';
+import { getFileExt } from '../../utils';
 import { AppContext } from '../state-provider';
 
 export default function LeftBar () {
-    const {
-      state: {
-  blackNoteDuration,
-  sheetType,
-  }, dispatch 
-  } = useContext(AppContext);
+  let navigate = useNavigate();
+  let { fileName } = useParams();
+  const { state: { currentFile }, dispatch } = useContext(AppContext);
+  const [fileList, setFileList] = useState();
+  
+  useEffect(() => {
+      // (async function () {
+      //     const a = await fileSystemService.readFile('C:\\Users\\QJS\\Downloads\\sungha_jung-river_flows_in_you.xml', {encoding: 'UTF-8'});
+      //     console.log(a);
+      // })();
+  }, []);
 
-    return <div className="w-[200px] px-3 bg-[#f0f0f0] border-l">
-        <div className="py-2">
-            <Form.Label>Độ dài</Form.Label>
-            <Form.Control type="number" value={blackNoteDuration} onChange={(e) => 
-dispatch('setBlackNoteDuration', e.target.value)} />
-        </div>
-        <div className="py-2">
-            <Form.Label>Loại phổ</Form.Label>
-            <Form.Check type="radio" name="sheedType" label="Ký tự nốt trên đàn" value={SHEET_TYPE.NOTE} checked={sheetType === SHEET_TYPE.NOTE} onChange={(e) => 
-dispatch('setSheetType', e.target.value)} />
-            {/* <Form.Check type="radio" name="sheedType" label="Nốt nhạc" value={SHEET_TYPE.POSITION} checked={sheetType === SHEET_TYPE.POSITION} onChange={(e) => setSheetType(e.target.value)} /> */}
-            <Form.Check type="radio" name="sheedType" label="Guitar Tab" value={SHEET_TYPE.GUITAR} checked={sheetType === SHEET_TYPE.GUITAR} onChange={(e) => 
-dispatch('setSheetType', e.target.value)} />
+  async function handleOpenDir () {
+    // dialog open
+    // fs open dir
+    // set state file list
+    const dirPaths = await dialogService.showOpenDialogSync({ properties: ['openDirectory'] });
+    console.log(dirPaths);
+    if (dirPaths) {
+      dispatch('setCurrentDirectory', dirPaths[0]);
+      const readDirResult = await fileSystemService.readdir(dirPaths[0]);
+      if (readDirResult) {
+      let fileList = [];
+      for (const name of readDirResult) {
+        const isFile = await fileSystemService.isFile(`${dirPaths}\\${name}`);
+        if (isFile && getFileExt(name) === 'txt') {
+          fileList.push(name);
+        }
+      }
+      setFileList(fileList);
 
-        </div>
-        <hr className="my-2" />
-        <div className="py-2">
-            <Form.Check type="checkbox" name="sheedType" label="Âm dài (Thổi sáo)" />
-        </div>
+      }
+    }
 
+  }
+  async function handleLoadFile (name) {
+    navigate(`./${name}`);
+  }
+
+  function handleOpenNewFile () {
+    navigate(`./new`);
+  }
+
+    return <div className="border-r w-[200px] flex flex-col">
+        <div className="flex justify-between items-center px-4 pr-2 py-2">
+            <label className="form-label">Danh sách</label>
+            <div>
+            <Button variant="" className="btn-icon text-xl" onClick={handleOpenNewFile}>
+                <span className="material-symbols-rounded">add</span>
+            </Button>
+            <Button variant="" className="btn-icon text-xl" onClick={handleOpenDir}>
+                <span className="material-symbols-rounded">format_list_bulleted</span>
+            </Button>
+            </div>
+        </div>
+        <div className="px-2 flex-1 min-h-0 overflow-y-auto">
+            {fileList?.map((name, index) =>
+                <div 
+                key={index}
+                className={cn('cursor-pointer px-2 py-1', { 'bg-blue-100 border border-blue-200 font-bold': fileName === name })} 
+                onClick={() => handleLoadFile(name)}
+                >
+                    <div className="text-black">
+                    <img src={text_file} alt="" />
+                        {name}
+                        </div>
+                </div>
+            )}
+        </div>
     </div>;
 }

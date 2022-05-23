@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, ProgressBar, Spinner } from 'react-bootstrap';
 import { EMPTY_NOTE, GUITAR_NOTE_MATRIX, KEYBOARD_MATRIX, NOTEID_LIST, SHEET_TYPE, TIME_NODE_MAP } from '../../const';
 import useForceRender from '../../hook';
@@ -11,22 +11,18 @@ export default function Footer () {
   const {
     state: {
         sheet,
-blackNoteDuration,
-sheetType,
-totalDuration,
-currentDuration,
-isPlaying,
-isPause,
+        blackNoteDuration,
+        sheetType,
+        totalDuration,
+        currentDuration,
+        isPlaying,
+        isPause,
+        isHoldSpace,
 }, dispatch 
 } = useContext(AppContext);
 const forceRender = useForceRender();
-// const [sheet, setSheet] = useState(DATA_SHEET);
-// const [blackNoteDuration, setBlackNoteDuration] = useState(DEFAULT_BLACKNOTEDURATION);
-// const [sheetType, setSheetType] = useState(SHEET_TYPE.GUITAR);
-// const [totalDuration, setTotalDuration] = useState(0);
-// const [currentDuration, setCurrentDuration] = useState(0);
-// const isPlaying = useRef();
-// const isPause = useRef();
+
+const [timeoutCount, setTimeoutCount] = useState();
 const resolvePause = useRef();
 const isStop = useRef();
 const rejectStop = useRef();
@@ -166,8 +162,9 @@ function calculateDuration(str) {
 }
 
 function playSheet(nodeConfig) {
-    setTimeout(async () => {
+    const x = setTimeout(async () => {
         robotjsService.setKeyboardDelayAsync(0);
+        isHoldSpace && await robotjsService.keyToggleAsync('space', 'down');
         // await nutjsService.configAutoDelayMs(0);
         for (const { notePos, duration } of nodeConfig) {
             // notePos.forEach(async ({x, y}, index) => {
@@ -200,14 +197,20 @@ function playSheet(nodeConfig) {
             dispatch('setCurrentDuration', currentDuration => currentDuration + (Number.isInteger(duration) ? duration: 0));
             //       robotjsService.setKeyboardDelay(duration);
             await listenPause();
-            await listenStop();
+            try {
+                await listenStop();
+            } catch(e) {
+                isHoldSpace && await robotjsService.keyToggleAsync('space', 'up');
+            }
             // await sleep(duration);
         }
 
         isPlaying.current = false;
         isStop.current = true;
         forceRender();
-    }, 5000)
+        isHoldSpace && await robotjsService.keyToggleAsync('space', 'up');
+    }, 5000);
+    setTimeoutCount(x);
 }
 
 function isValidXY(x, y) {
@@ -245,6 +248,13 @@ function handleStop(e) {
     forceRender();
     rejectStop.current && rejectStop.current();
 }
+
+useEffect(() => () => {
+    resolvePause.current?.();
+    rejectStop.current?.();
+    clearTimeout(timeoutCount);
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
 
 console.log(currentDuration);

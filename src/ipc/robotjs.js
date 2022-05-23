@@ -22,6 +22,7 @@ const robotjsService = invokeFactory('robotjs', [
     'capture', 
 
     'keyTapAsync',
+    'keyToggleAsync',
     'setKeyboardDelayAsync',
 ]);
 export default robotjsService;

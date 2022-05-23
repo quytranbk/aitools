@@ -1,6 +1,7 @@
 
 export const DEFAULT_BLACKNOTEDURATION = 500;
 export const EMPTY_NOTE = 'p';
+export const DEFAULT_NEW_FILENAME = 'Untitled.txt';
 export const SHEET_TYPE = {
     NOTE: 'NOTE',
     POSITION: 'POSITION',
@@ -106,3 +107,8 @@ export const GUITAR_NOTE_MATRIX = [
     ['a1', 'a1', 'b1', 'c2', 'c2', 'd2', 'd2', 'e2'],
     ['e1', 'f1', 'f1', 'g1', 'g1', 'a1', 'a1', 'b1'],
 ];
+
+export const PAGE_TYPE = {
+    NEW: 'NEW',
+    DETAIL: 'DETAIL',
+}

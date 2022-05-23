@@ -1,37 +1,9 @@
 
-@font-face {
-  font-family: 'Inter';
-  src: url('../assets/fonts/Inter-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('../assets/fonts/Inter-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('../assets/fonts/Inter-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
+// @import './font';
 @import 'material-symbols/rounded.css';
+.material-symbols-rounded {
+  font-size: inherit;
+}
 
 @tailwind base;
 @layer base {
@@ -142,8 +114,4 @@ body {
 
 img {
   image-rendering: -webkit-optimize-contrast;
-}
-
-span.material-symbols-rounded {
-  font-size: inherit;
 }

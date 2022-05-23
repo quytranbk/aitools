@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function useForceRender() {
     const [, setRender] = useState();
@@ -7,3 +8,9 @@ export default function useForceRender() {
     }
     return forceRender;
 }
+
+export function useQuery() {
+    const { search } = useLocation();
+    return useMemo(() => new URLSearchParams(search), [search]);
+  }
+  

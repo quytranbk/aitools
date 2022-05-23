@@ -7,9 +7,11 @@ import fileSystemService from '../../ipc/filesystem';
 import { findMap } from '../../utils';
 import { AppContext } from '../state-provider';
 import { xml2js } from 'xml-js';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const { dispatch } = useContext(AppContext);
+  let navigate = useNavigate();
 
   async function openFile() {
     try {
@@ -29,7 +31,6 @@ export default function Header() {
       return;
     }
     const contentObj = (xml2js(content, { compact: true }));
-    console.log(contentObj);
     const reducedXmlNoteList = contentObj['score-partwise']?.part?.measure?.reduce((barAcc, bar) => {
       const reduceNote = bar.note.reduce((acc, note) => {
         if (note.notations?.technical?.string) {
@@ -57,8 +58,9 @@ export default function Header() {
     }, []);
     // console.log(reducedXmlNoteList);
     if (reducedXmlNoteList) {
-      const a = buildGuitarSheet(reducedXmlNoteList);
-      dispatch('setSheet', a);
+      const outputSheet = buildGuitarSheet(reducedXmlNoteList);
+      dispatch('setSheet', outputSheet);
+      navigate(`./new?import=true`);
     }
   }
   
@@ -97,10 +99,10 @@ export default function Header() {
         element
       ];
     }, [])
-    .map(element => {
+    .map((element, index) => {
       const num = caculateNum(element.type);
       const stringNote = caculateNoteString(element);
-      return `${stringNote}${num}`;
+      return `${stringNote}${num}${index % 10 === 0 ? '\n' : ''}`;
     })
     .join(' ');
   }
@@ -118,7 +120,7 @@ export default function Header() {
     return (element.chords ? [...element.chords, element] : [element]).map(el => {if(!el.string?._text) console.log(el); return `${el.string?._text}${el.fret?._text}`}).join('=');
   }
 
-  return <header className="px-2 relative flex bg-[#f0f0f0] border-b border-b-[#cccccc] border-t border-t-[#cccccc]">
+  return <header className="relative flex bg-[#f0f0f0] border-b border-b-[#cccccc] border-t border-t-[#cccccc]">
     {/* <div className="absolute inset-0 flex justify-center items-center">
       <img className="w-[24px] h-[24px]" src={apple} alt="" />
     </div> */}
@@ -127,7 +129,7 @@ export default function Header() {
                 <Dropdown.Toggle as={React.forwardRef(({ onClick }, ref) => (
                         
                   <div
-                    className="py-[6px] flex text-[1.45rem] font-medium cursor-pointer"
+                    className="px-2 py-2 flex text-[1.45rem] font-medium cursor-pointer"
                     ref={ref}
                     onClick={(e) => {
                       e.preventDefault();
@@ -135,7 +137,8 @@ export default function Header() {
                     }}
                   >
                     <div>"ai"</div>
-                    <div className="text-black text-opacity-40 ml-1">Tools</div>
+                    <div className="text-black text-opacity-40">Tools</div>
+                    <span className="material-symbols-rounded text-2xl">expand_more</span>
                   </div>
                     ))
                     } id="dropdown-custom-components">
@@ -153,7 +156,8 @@ export default function Header() {
           <div className="text-black text-opacity-30 ml-1">Tools</div>
           </Navbar.Brand>
   </Navbar> */}
-    <div>
+    <div className="px-2 flex items-center text-neutral-500">
+          <span className="material-symbols-rounded text-2xl">contact_support</span>
     </div>
   </header>;
 }
