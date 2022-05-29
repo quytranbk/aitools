@@ -57,6 +57,8 @@ export function reducer(state, action) {
       return handleReturn('reloadDetailEv');  
     case 'setIsHoldSpace':
       return handleReturn('isHoldSpace'); 
+    case 'setFileList':
+      return handleReturn('fileList'); 
     default:
       throw new Error();
   }

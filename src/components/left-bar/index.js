@@ -11,8 +11,7 @@ import { AppContext } from '../state-provider';
 export default function LeftBar () {
   let navigate = useNavigate();
   let { fileName } = useParams();
-  const { state: { currentFile }, dispatch } = useContext(AppContext);
-  const [fileList, setFileList] = useState();
+  const { state: { currentFile, fileList }, dispatch } = useContext(AppContext);
   
   useEffect(() => {
       // (async function () {
@@ -21,47 +20,14 @@ export default function LeftBar () {
       // })();
   }, []);
 
-  async function handleOpenDir () {
-    // dialog open
-    // fs open dir
-    // set state file list
-    const dirPaths = await dialogService.showOpenDialogSync({ properties: ['openDirectory'] });
-    console.log(dirPaths);
-    if (dirPaths) {
-      dispatch('setCurrentDirectory', dirPaths[0]);
-      const readDirResult = await fileSystemService.readdir(dirPaths[0]);
-      if (readDirResult) {
-      let fileList = [];
-      for (const name of readDirResult) {
-        const isFile = await fileSystemService.isFile(`${dirPaths}\\${name}`);
-        if (isFile && getFileExt(name) === 'txt') {
-          fileList.push(name);
-        }
-      }
-      setFileList(fileList);
-
-      }
-    }
-
-  }
   async function handleLoadFile (name) {
     navigate(`./${name}`);
-  }
-
-  function handleOpenNewFile () {
-    navigate(`./new`);
   }
 
     return <div className="border-r w-[200px] flex flex-col">
         <div className="flex justify-between items-center px-4 pr-2 py-2">
             <label className="form-label">Danh sách</label>
             <div>
-            <Button variant="" className="btn-icon text-xl" onClick={handleOpenNewFile}>
-                <span className="material-symbols-rounded">add</span>
-            </Button>
-            <Button variant="" className="btn-icon text-xl" onClick={handleOpenDir}>
-                <span className="material-symbols-rounded">format_list_bulleted</span>
-            </Button>
             </div>
         </div>
         <div className="px-2 flex-1 min-h-0 overflow-y-auto">

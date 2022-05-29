@@ -104,7 +104,7 @@ html {
 }
 
 body {
-    min-width: 992px;
+    min-width: 800px;
     height: 100vh;
     margin: 0;
 }
@@ -115,3 +115,9 @@ body {
 img {
   image-rendering: -webkit-optimize-contrast;
 }
+.drag-region {
+  -webkit-app-region: drag;
+}
+// .header {
+//   background: linear-gradient(0deg, #ebebebc7, #f5f5f5);
+// }

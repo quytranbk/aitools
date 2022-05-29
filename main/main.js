@@ -14,17 +14,19 @@ let mainWindow;
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 1920, 
+        width: 900, 
         height: 600, 
-        y: 0,
-        x: 0,
+        y: 200,
+        x: 300,
         webPreferences: 
         { 
             nodeIntegration: true,
             preload: path.join(__dirname, 'preload.js'),
             spellcheck: false
-        }
+        },
+        // frame: false
     });
+    !process.env.ELECTRON_START_URL && mainWindow.removeMenu();
 
     // and load the index.html of the app.
     const startUrl = process.env.ELECTRON_START_URL || `file://${path.join(__dirname, "../build/index.html")}`;

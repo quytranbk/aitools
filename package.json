@@ -39,6 +39,7 @@
     ]
   },
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,16 +51,33 @@
     "dist": "electron-builder"
   },
   "build": {
-    "productName": "aitools",
-    "appId": "com.aitools",
+    "productName": "itunss",
+    "appId": "com.itunss",
     "extends": null,
     "directories": {
       "buildResources": "assets"
     },
+    "asar": false,
+    "files": [
+      "./build/**/*",
+      "./main/**/*",
+      "!node_modules/**/*",
+      {
+        "from": "./assets",
+        "to": "./",
+        "filter": ["package.json"]
+      }
+    ],
     "win": {
       "target": [
         "nsis"
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "allowToChangeInstallationDirectory": true
     }
   },
   "eslintConfig": {

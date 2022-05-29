@@ -40,6 +40,6 @@ export default function NewFile () {
         <h3 className="px-2">
           {DEFAULT_NEW_FILENAME}
         </h3>
-        <Form.Control className="border-0 h-full whitespace-nowrap" as="textarea" spellCheck="false" autoFocus value={localSheet} onChange={(e) => setLocalSheet(e.target.value)} />
+        <Form.Control className="border-0 h-full whitespace-nowrap" as="textarea" spellCheck="false" autoFocus placeholder="Nhập..." value={localSheet} onChange={(e) => setLocalSheet(e.target.value)} />
     </div>;
 }

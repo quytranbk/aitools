@@ -93,7 +93,7 @@ function splitNode(node) {
             if (note.length >= 2) {
                 const frag1 = parseInt(note.charAt(0));
                 const frag2 = parseInt(note.charAt(1));
-                if (Number.isInteger(frag1) && Number.isInteger(frag2)) {
+                if (Number.isInteger(frag1) && Number.isInteger(frag2) && frag2 >= 0) {
                     const guitarNote = GUITAR_NOTE_MATRIX[frag1 - 1] && GUITAR_NOTE_MATRIX[frag1 - 1][frag2];
                     if (guitarNote) {
                         return guitarNote + note.slice(2);
@@ -214,7 +214,7 @@ function playSheet(nodeConfig) {
 }
 
 function isValidXY(x, y) {
-    return [x, y].every(el => Number.isInteger(el));
+    return Number.isInteger(x) && x <= 6 && Number.isInteger(y) && y <= 2;
 }
 
 async function listenPause() {
@@ -245,6 +245,7 @@ function handlePause(e) {
 
 function handleStop(e) {
     isPlaying.current = false;
+    resetState();
     forceRender();
     rejectStop.current && rejectStop.current();
 }

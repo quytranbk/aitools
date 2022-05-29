@@ -1,6 +1,7 @@
 const robotjs = require('robotjs');
 
 module.exports = robotjs;
+robotjs.setKeyboardDelay(0);
 
 const sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
